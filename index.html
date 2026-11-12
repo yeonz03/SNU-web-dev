@@ -1,8 +1,210 @@
-<html>
-  <head>
-    <title>Fintech 14 Homepage</title>
-  </head>
-  <body>
-    <h1>welcome to Fintech 14 Homepage</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>장연재 — Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f7f9;
+      --text: #111418;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2f6bff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1115;
+        --surface: #181b21;
+        --text: #f1f3f5;
+        --muted: #9aa1ab;
+        --line: #262a31;
+        --accent: #6b95ff;
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Pretendard", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section { padding: 56px 0; border-top: 1px solid var(--line); }
+    h2 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    /* 상단: 이름 + 한 줄 소개 */
+    .intro { padding: 120px 0 72px; border-top: none; }
+    .intro h1 {
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .intro p {
+      margin-top: 16px;
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    /* 관심사 */
+    .interests { list-style: none; display: grid; gap: 12px; }
+    .interests li {
+      font-size: 1.05rem;
+      padding-left: 20px;
+      position: relative;
+    }
+    .interests li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.65em;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* 프로젝트 카드 */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .card h3 { font-size: 1.15rem; font-weight: 600; }
+    .card p { color: var(--muted); font-size: 0.95rem; flex: 1; }
+    .card a {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .card a:hover { text-decoration: underline; }
+
+    /* 스킬 뱃지 */
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* 연락처 */
+    .contact { display: flex; flex-wrap: wrap; gap: 12px 32px; }
+    .contact a {
+      font-size: 1.05rem;
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .contact a:hover { color: var(--accent); border-color: var(--accent); }
+
+    footer {
+      padding: 32px 0 48px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* 모바일 */
+    @media (max-width: 600px) {
+      .container { padding: 0 16px; }
+      .intro { padding: 80px 0 48px; }
+      section { padding: 44px 0; }
+      .projects { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+
+    <!-- 이름 + 한 줄 소개 -->
+    <section class="intro">
+      <h1>장연재</h1>
+      <p>SNU Fintech 14</p>
+    </section>
+
+    <!-- 관심사 -->
+    <section>
+      <h2>Interests</h2>
+      <ul class="interests">
+        <li>데이터 시각화</li>
+        <li>웹 개발</li>
+        <li>핀테크</li>
+      </ul>
+    </section>
+
+    <!-- 프로젝트 -->
+    <section>
+      <h2>Projects</h2>
+      <div class="projects">
+        <article class="card">
+          <h3>금리·환율 시각화 대시보드</h3>
+          <p>한국은행 공공 데이터를 활용해 기준금리와 원/달러 환율의 흐름을 한눈에 비교할 수 있는 인터랙티브 차트를 만들었습니다.</p>
+          <a href="#" target="_blank">자세히 보기 →</a>
+        </article>
+        <article class="card">
+          <h3>개인 포트폴리오 웹사이트</h3>
+          <p>HTML과 CSS만으로 제작한 반응형 원페이지 포트폴리오입니다. 다크 모드를 지원합니다.</p>
+          <a href="https://github.com/yeonz03/SNU-web-dev" target="_blank">GitHub →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 스킬 -->
+    <section>
+      <h2>Skills</h2>
+      <div class="badges">
+        <span class="badge">HTML</span>
+        <span class="badge">CSS</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">Python</span>
+        <span class="badge">D3.js</span>
+        <span class="badge">Pandas</span>
+        <span class="badge">Git</span>
+        <span class="badge">Figma</span>
+      </div>
+    </section>
+
+    <!-- 연락처 -->
+    <section>
+      <h2>Contact</h2>
+      <div class="contact">
+        <a href="mailto:you@example.com">you@example.com</a>
+        <a href="https://github.com/yeonz03" target="_blank">GitHub</a>
+      </div>
+    </section>
+
+    <footer>© 2026 장연재</footer>
+  </main>
+</body>
 </html>
