@@ -3,208 +3,580 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>장연재 — Portfolio</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <title>장연재의 미니홈피</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css" />
   <style>
     :root {
-      --bg: #ffffff;
-      --surface: #f6f7f9;
-      --text: #111418;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --accent: #2f6bff;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1115;
-        --surface: #181b21;
-        --text: #f1f3f5;
-        --muted: #9aa1ab;
-        --line: #262a31;
-        --accent: #6b95ff;
-      }
+      --sky: #8fc6e8;
+      --sky-dark: #3d8fc4;
+      --orange: #ff8a3d;
+      --paper: #ffffff;
+      --line: #c9d9e6;
+      --dash: #b4c8d8;
+      --text: #333333;
+      --muted: #8a8a8a;
+      --link: #1f6fb2;
+      --pixel: "Galmuri11", "Dotum", "돋움", sans-serif;
+      --pixel-sm: "Galmuri9", "Dotum", "돋움", sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: "Pretendard", -apple-system, sans-serif;
-      background: var(--bg);
+      font-family: var(--pixel);
+      font-size: 13px;
       color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: 40px 16px;
+      /* 하늘색 바탕 + 도트 패턴 */
+      background-color: var(--sky);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.45) 1.5px, transparent 1.5px);
+      background-size: 14px 14px;
     }
-    a { color: inherit; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .container {
-      max-width: 760px;
+    /* ===== 다이어리 바깥 틀 ===== */
+    .diary {
+      max-width: 880px;
       margin: 0 auto;
-      padding: 0 24px;
-    }
-    section { padding: 56px 0; border-top: 1px solid var(--line); }
-    h2 {
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 24px;
+      position: relative;
+      background: #dfeaf2;
+      border: 2px solid #9fb8cc;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08);
     }
 
-    /* 상단: 이름 + 한 줄 소개 */
-    .intro { padding: 120px 0 72px; border-top: none; }
-    .intro h1 {
-      font-size: clamp(2.5rem, 7vw, 4rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    .intro p {
-      margin-top: 16px;
-      font-size: 1.2rem;
+    /* 상단 투데이 카운터 */
+    .counter {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
       color: var(--muted);
+      padding: 0 6px 8px;
     }
+    .counter b { color: var(--orange); font-weight: normal; }
 
-    /* 관심사 */
-    .interests { list-style: none; display: grid; gap: 12px; }
-    .interests li {
-      font-size: 1.05rem;
-      padding-left: 20px;
+    .pages {
+      display: grid;
+      grid-template-columns: 230px 1fr;
       position: relative;
     }
-    .interests li::before {
+
+    /* 가운데 스프링 */
+    .pages::after {
       content: "";
       position: absolute;
-      left: 0; top: 0.65em;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
+      left: 230px;
+      top: 20px; bottom: 20px;
+      width: 14px;
+      transform: translateX(-7px);
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0 10px,
+        #8aa3b8 10px 14px,
+        transparent 14px 26px
+      );
+      border-radius: 4px;
+      z-index: 2;
     }
 
-    /* 프로젝트 카드 */
-    .projects {
+    .page {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      min-height: 520px;
+    }
+    .page-left { margin-right: 6px; }
+    .page-right { margin-left: 6px; display: flex; flex-direction: column; }
+
+    /* ===== 왼쪽: 프로필 ===== */
+    .today {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .today span { color: var(--orange); }
+
+    .avatar {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      background: linear-gradient(#fffbe8, #ffeccc);
+      display: grid;
+      place-items: center;
+      font-size: 72px;
+    }
+
+    .mood { margin: 10px 0; font-size: 12px; }
+    .mood select {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      border: 1px solid var(--line);
+      padding: 1px 2px;
+      background: #fff;
+    }
+
+    .bio {
+      border-top: 1px dashed var(--dash);
+      border-bottom: 1px dashed var(--dash);
+      padding: 10px 0;
+      line-height: 1.7;
+      min-height: 90px;
+    }
+
+    .owner { margin-top: 12px; font-size: 14px; }
+    .owner + a { font-family: var(--pixel-sm); font-size: 11px; }
+
+    .wave {
+      margin-top: 10px;
+      width: 100%;
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: #f4f8fb;
+      color: var(--text);
+    }
+
+    /* ===== 오른쪽: 타이틀 + BGM ===== */
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--sky);
+    }
+    .title {
+      font-family: "Galmuri14", var(--pixel);
+      font-size: 17px;
+      font-weight: normal;
+      color: var(--sky-dark);
+    }
+    .bgm {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      background: #f4f8fb;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 230px;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .bgm .play { color: var(--orange); flex: none; }
+    .bgm .track { overflow: hidden; white-space: nowrap; flex: 1; }
+    .bgm .track span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 9s linear infinite;
+    }
+    @keyframes scroll { to { transform: translateX(-100%); } }
+
+    .content { flex: 1; padding-top: 14px; }
+
+    /* 탭 콘텐츠 */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .box-title {
+      font-size: 12px;
+      color: var(--sky-dark);
+      margin: 4px 0 8px;
+    }
+    .box-title::before { content: "■ "; color: var(--orange); }
+
+    /* 업데이트 소식 */
+    .news {
+      list-style: none;
+      border-top: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+    .news li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 2px;
+      border-bottom: 1px dashed var(--dash);
+    }
+    .news .cat { color: var(--orange); margin-right: 6px; }
+    .news time { font-family: var(--pixel-sm); font-size: 11px; color: var(--muted); flex: none; }
+
+    /* 미니룸 */
+    .miniroom {
+      height: 180px;
+      border: 1px solid var(--line);
+      background: linear-gradient(to bottom, #fff7e6 0 60%, #e8c9a0 60% 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .miniroom span { position: absolute; font-size: 34px; }
+    .miniroom .bubble {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 3px 8px;
+    }
+
+    /* 사진첩 = 프로젝트 */
+    .albums {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 12px;
     }
-    .card {
-      background: var(--surface);
+    .album { border: 1px solid var(--line); padding: 8px; background: #fff; }
+    .album .thumb {
+      height: 110px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      background: #eef5fb;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: transform 0.2s, border-color 0.2s;
+      margin-bottom: 8px;
     }
-    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
-    .card h3 { font-size: 1.15rem; font-weight: 600; }
-    .card p { color: var(--muted); font-size: 0.95rem; flex: 1; }
-    .card a {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .card a:hover { text-decoration: underline; }
+    .album h3 { font-size: 13px; font-weight: normal; margin-bottom: 4px; }
+    .album p { font-family: var(--pixel-sm); font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 6px; }
+    .album a { font-family: var(--pixel-sm); font-size: 11px; }
 
-    /* 스킬 뱃지 */
-    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* 프로필 표 */
+    .profile-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+    .profile-table th, .profile-table td {
+      border-bottom: 1px dashed var(--dash);
+      padding: 7px 4px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .profile-table th { width: 80px; color: var(--sky-dark); font-weight: normal; }
+
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; }
     .badge {
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: var(--surface);
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      padding: 3px 10px;
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      border-radius: 20px;
+      background: #fff6ef;
+    }
+
+    /* 방명록 */
+    .contact-line { margin-bottom: 14px; line-height: 2; }
+    .guest-form {
       border: 1px solid var(--line);
-      font-size: 0.9rem;
-      font-weight: 500;
+      background: #f4f8fb;
+      padding: 10px;
+      margin-bottom: 14px;
+      display: grid;
+      gap: 6px;
     }
-
-    /* 연락처 */
-    .contact { display: flex; flex-wrap: wrap; gap: 12px 32px; }
-    .contact a {
-      font-size: 1.05rem;
-      text-decoration: none;
-      border-bottom: 1px solid var(--line);
-      transition: border-color 0.2s, color 0.2s;
+    .guest-form input, .guest-form textarea {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      border: 1px solid var(--line);
+      padding: 5px;
+      width: 100%;
+      resize: none;
     }
-    .contact a:hover { color: var(--accent); border-color: var(--accent); }
+    .guest-form button {
+      justify-self: end;
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      padding: 3px 14px;
+      border: 1px solid var(--sky-dark);
+      background: #fff;
+      color: var(--sky-dark);
+      cursor: pointer;
+    }
+    .guest-form button:hover { background: var(--sky-dark); color: #fff; }
 
-    footer {
-      padding: 32px 0 48px;
-      font-size: 0.85rem;
+    .entry { border: 1px solid var(--line); margin-bottom: 10px; }
+    .entry-head {
+      background: #eef5fb;
+      padding: 4px 8px;
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
       color: var(--muted);
     }
+    .entry-head b { color: var(--text); font-weight: normal; }
+    .entry-body { padding: 10px 8px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
 
-    /* 모바일 */
-    @media (max-width: 600px) {
-      .container { padding: 0 16px; }
-      .intro { padding: 80px 0 48px; }
-      section { padding: 44px 0; }
-      .projects { grid-template-columns: 1fr; }
+    /* ===== 오른쪽 세로 탭 ===== */
+    .tabs {
+      position: absolute;
+      right: -64px;
+      top: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tab {
+      font-family: var(--pixel-sm);
+      font-size: 11px;
+      width: 62px;
+      padding: 8px 0;
+      border: 1px solid #9fb8cc;
+      border-left: none;
+      border-radius: 0 8px 8px 0;
+      background: var(--sky-dark);
+      color: #fff;
+      cursor: pointer;
+    }
+    .tab.active { background: #fff; color: var(--sky-dark); }
+
+    /* ===== 좁은 화면: 탭을 위쪽 가로로 ===== */
+    @media (max-width: 1040px) {
+      .tabs {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .tab { width: auto; padding: 6px 14px; border: 1px solid #9fb8cc; border-radius: 8px; }
+    }
+    /* ===== 모바일: 한 줄로 쌓기 ===== */
+    @media (max-width: 680px) {
+      body { padding: 16px; }
+      .diary { padding: 10px; }
+      .pages { grid-template-columns: minmax(0, 1fr); }
+      .pages::after { display: none; }
+      .page { min-height: 0; }
+      .page-left { margin: 0 0 10px; }
+      .page-right { margin: 0; }
+      .avatar { max-width: 160px; margin: 0 auto; font-size: 60px; }
+      .albums { grid-template-columns: 1fr; }
+      .bgm { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <main class="container">
 
-    <!-- 이름 + 한 줄 소개 -->
-    <section class="intro">
-      <h1>장연재</h1>
-      <p>SNU Fintech 14</p>
-    </section>
+  <div class="diary">
+    <div class="counter">TODAY <b id="today">0</b> | TOTAL <b id="total">0</b></div>
 
-    <!-- 관심사 -->
-    <section>
-      <h2>Interests</h2>
-      <ul class="interests">
-        <li>데이터 시각화</li>
-        <li>웹 개발</li>
-        <li>핀테크</li>
-      </ul>
-    </section>
+    <!-- 세로 탭 메뉴 -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="home">홈</button>
+      <button class="tab" data-tab="profile">프로필</button>
+      <button class="tab" data-tab="album">사진첩</button>
+      <button class="tab" data-tab="guest">방명록</button>
+    </nav>
 
-    <!-- 프로젝트 -->
-    <section>
-      <h2>Projects</h2>
-      <div class="projects">
-        <article class="card">
-          <h3>금리·환율 시각화 대시보드</h3>
-          <p>한국은행 공공 데이터를 활용해 기준금리와 원/달러 환율의 흐름을 한눈에 비교할 수 있는 인터랙티브 차트를 만들었습니다.</p>
-          <a href="#" target="_blank">자세히 보기 →</a>
-        </article>
-        <article class="card">
-          <h3>개인 포트폴리오 웹사이트</h3>
-          <p>HTML과 CSS만으로 제작한 반응형 원페이지 포트폴리오입니다. 다크 모드를 지원합니다.</p>
-          <a href="https://github.com/yeonz03/SNU-web-dev" target="_blank">GitHub →</a>
-        </article>
-      </div>
-    </section>
+    <div class="pages">
 
-    <!-- 스킬 -->
-    <section>
-      <h2>Skills</h2>
-      <div class="badges">
-        <span class="badge">HTML</span>
-        <span class="badge">CSS</span>
-        <span class="badge">JavaScript</span>
-        <span class="badge">Python</span>
-        <span class="badge">D3.js</span>
-        <span class="badge">Pandas</span>
-        <span class="badge">Git</span>
-        <span class="badge">Figma</span>
-      </div>
-    </section>
+      <!-- ===== 왼쪽 페이지: 프로필 ===== -->
+      <aside class="page page-left">
+        <p class="today">TODAY IS... <span>☆ 설렘 ☆</span></p>
+        <div class="avatar">🐻</div>
 
-    <!-- 연락처 -->
-    <section>
-      <h2>Contact</h2>
-      <div class="contact">
-        <a href="mailto:you@example.com">you@example.com</a>
-        <a href="https://github.com/yeonz03" target="_blank">GitHub</a>
-      </div>
-    </section>
+        <div class="mood">
+          기분 :
+          <select aria-label="오늘의 기분">
+            <option>😊 행복</option>
+            <option>💻 코딩중</option>
+            <option>😴 피곤</option>
+            <option>🔥 열정</option>
+          </select>
+        </div>
 
-    <footer>© 2026 장연재</footer>
-  </main>
+        <p class="bio">
+          SNU Fintech 14 ♡<br />
+          데이터를 그림으로,<br />
+          생각을 웹으로 ~*
+        </p>
+
+        <p class="owner">장연재</p>
+        <a href="https://github.com/yeonz03" target="_blank">github.com/yeonz03</a>
+
+        <select class="wave" aria-label="파도타기" onchange="if (this.value) window.open(this.value, '_blank'); this.selectedIndex = 0;">
+          <option value="">▼ 파도타기</option>
+          <option value="https://github.com/yeonz03">GitHub</option>
+          <option value="https://github.com/yeonz03/SNU-web-dev">SNU-web-dev 저장소</option>
+        </select>
+      </aside>
+
+      <!-- ===== 오른쪽 페이지: 콘텐츠 ===== -->
+      <section class="page page-right">
+        <div class="top">
+          <h1 class="title">장연재의 미니홈피 ♪</h1>
+          <div class="bgm">
+            <span class="play">▶</span>
+            <div class="track"><span>오늘도 코딩 중 ~ ♬ (BGM 준비중)</span></div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <!-- 홈 -->
+          <div class="panel active" id="home">
+            <p class="box-title">Updated news</p>
+            <ul class="news">
+              <li><span><span class="cat">[사진첩]</span>금리·환율 시각화 대시보드</span><time>2026.11.12</time></li>
+              <li><span><span class="cat">[사진첩]</span>개인 포트폴리오 웹사이트</span><time>2026.11.12</time></li>
+              <li><span><span class="cat">[프로필]</span>관심사 &amp; 스킬 업데이트</span><time>2026.11.12</time></li>
+            </ul>
+
+            <p class="box-title">Mini Room</p>
+            <div class="miniroom">
+              <span style="left:8%; top:20%">🪟</span>
+              <span style="left:38%; top:46%">💻</span>
+              <span style="left:52%; top:50%">🐻</span>
+              <span style="right:10%; top:30%">🪴</span>
+              <span style="left:14%; bottom:8%">📚</span>
+              <span class="bubble" style="left:56%; top:22%">과제하는 중...</span>
+            </div>
+          </div>
+
+          <!-- 프로필: 관심사 + 스킬 -->
+          <div class="panel" id="profile">
+            <p class="box-title">Profile</p>
+            <table class="profile-table">
+              <tr><th>이름</th><td>장연재</td></tr>
+              <tr><th>소속</th><td>SNU Fintech 14</td></tr>
+              <tr><th>관심사</th><td>데이터 시각화 · 웹 개발 · 핀테크</td></tr>
+            </table>
+
+            <p class="box-title">Skills</p>
+            <div class="badges">
+              <span class="badge">HTML</span>
+              <span class="badge">CSS</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">Python</span>
+              <span class="badge">D3.js</span>
+              <span class="badge">Pandas</span>
+              <span class="badge">Git</span>
+              <span class="badge">Figma</span>
+            </div>
+          </div>
+
+          <!-- 사진첩: 프로젝트 -->
+          <div class="panel" id="album">
+            <p class="box-title">Projects</p>
+            <div class="albums">
+              <article class="album">
+                <div class="thumb">📈</div>
+                <h3>금리·환율 시각화 대시보드</h3>
+                <p>한국은행 공공 데이터를 활용해 기준금리와 원/달러 환율의 흐름을 한눈에 비교할 수 있는 인터랙티브 차트를 만들었습니다.</p>
+                <a href="#" target="_blank">자세히 보기 ▶</a>
+              </article>
+              <article class="album">
+                <div class="thumb">🏠</div>
+                <h3>개인 포트폴리오 웹사이트</h3>
+                <p>HTML, CSS, JavaScript로 만든 미니홈피 컨셉의 포트폴리오입니다.</p>
+                <a href="https://github.com/yeonz03/SNU-web-dev" target="_blank">GitHub ▶</a>
+              </article>
+            </div>
+          </div>
+
+          <!-- 방명록: 연락처 -->
+          <div class="panel" id="guest">
+            <p class="box-title">Contact</p>
+            <p class="contact-line">
+              ✉ <a href="mailto:you@example.com">you@example.com</a><br />
+              🐙 <a href="https://github.com/yeonz03" target="_blank">github.com/yeonz03</a>
+            </p>
+
+            <p class="box-title">방명록</p>
+            <form class="guest-form" id="guestForm">
+              <input id="gName" maxlength="20" placeholder="이름" required />
+              <textarea id="gMsg" rows="3" maxlength="200" placeholder="방명록을 남겨주세요 ^^*" required></textarea>
+              <button type="submit">확인</button>
+            </form>
+            <div id="entries"></div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // 탭 전환
+    document.querySelectorAll(".tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        document.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
+        document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+      });
+    });
+
+    // localStorage는 브라우저 설정에 따라 막혀 있을 수 있어서 try/catch로 감싸요
+    function load(key, fallback) {
+      try {
+        var v = JSON.parse(localStorage.getItem(key));
+        return v === null ? fallback : v;
+      } catch (e) { return fallback; }
+    }
+    function save(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+    }
+
+    // 방문자 카운터 (이 브라우저 기준)
+    var todayKey = new Date().toISOString().slice(0, 10);
+    var visits = load("visits", { total: 0, days: {} });
+    visits.total += 1;
+    visits.days[todayKey] = (visits.days[todayKey] || 0) + 1;
+    save("visits", visits);
+    document.getElementById("today").textContent = visits.days[todayKey];
+    document.getElementById("total").textContent = visits.total;
+
+    // 방명록 (이 브라우저에만 저장돼요)
+    var entries = load("guestbook", [
+      { name: "연재", msg: "제 미니홈피에 오신 걸 환영해요 ~ ♡", date: "2026.11.12" }
+    ]);
+
+    function render() {
+      var box = document.getElementById("entries");
+      box.innerHTML = "";
+      for (var i = entries.length - 1; i >= 0; i--) {
+        var e = entries[i];
+        var div = document.createElement("div");
+        div.className = "entry";
+
+        var head = document.createElement("div");
+        head.className = "entry-head";
+        var who = document.createElement("span");
+        who.textContent = "No." + (i + 1) + " ";
+        var b = document.createElement("b");
+        b.textContent = e.name;        // textContent라서 HTML이 실행되지 않아요
+        who.appendChild(b);
+        var date = document.createElement("span");
+        date.textContent = e.date;
+        head.append(who, date);
+
+        var body = document.createElement("div");
+        body.className = "entry-body";
+        body.textContent = e.msg;
+
+        div.append(head, body);
+        box.appendChild(div);
+      }
+    }
+    render();
+
+    document.getElementById("guestForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = document.getElementById("gName").value.trim();
+      var msg = document.getElementById("gMsg").value.trim();
+      if (!name || !msg) return;
+      var d = new Date();
+      var date = d.getFullYear() + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + String(d.getDate()).padStart(2, "0");
+      entries.push({ name: name, msg: msg, date: date });
+      save("guestbook", entries);
+      render();
+      ev.target.reset();
+    });
+  </script>
 </body>
 </html>
